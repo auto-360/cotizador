@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  job_id:
+  deploy_to_cloud_function:
     permissions:
       contents: 'read'
       id-token: 'write'
