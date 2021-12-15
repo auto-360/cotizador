@@ -1,6 +1,7 @@
 package autofact
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -47,5 +48,13 @@ func getToken(user, passwd string) string {
 		fmt.Println(err)
 		return ""
 	}
-	return string(body)
+
+	t := token{}
+
+	err = json.Unmarshal(body, &t)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return t.Token
 }
