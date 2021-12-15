@@ -1,7 +1,0 @@
-name: Go
-
-on: push
-jobs:
-  deploy_to_cloud_function:
-    - id: 'test'
-      run: 'curl "${{ steps.deploy.outputs.url }}"'
