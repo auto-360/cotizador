@@ -11,7 +11,11 @@ import (
 // HelloWorld prints the JSON encoded "message" field in the body
 // of the request or "Hello, World!" if there isn't one.
 func GetModel(w http.ResponseWriter, r *http.Request) {
-	value := autofact.GetModels("bbbb24")
+	patente := r.URL.Query().Get("patente")
+	if len(patente) != 6 {
+		return
+	}
+	value := autofact.GetModels(patente)
 	w.Write(*value)
 }
 

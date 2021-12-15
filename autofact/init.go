@@ -1,6 +1,9 @@
 package autofact
 
-import "os"
+import (
+	"os"
+	"time"
+)
 
 var URL, TOKEN string
 
@@ -9,5 +12,13 @@ func init() {
 	USER := os.Getenv("AUTOFACT_USER")
 	PASS := os.Getenv("AUTOFACT_PASS")
 
-	TOKEN = getToken(USER, PASS)
+	go func() {
+		for {
+
+			TOKEN = getToken(USER, PASS)
+			time.Sleep(time.Minute * 5)
+		}
+
+	}()
+
 }

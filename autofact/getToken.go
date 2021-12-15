@@ -9,8 +9,8 @@ import (
 )
 
 type user struct {
-	User   string
-	Passwd string
+	User   string `json:"usuario"`
+	Passwd string `json:"contrasena"`
 }
 
 type token struct {

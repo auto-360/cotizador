@@ -18,7 +18,6 @@ func GetModels(patente string) *[]byte {
 		fmt.Println(err)
 		return &([]byte{})
 	}
-	fmt.Println("TOKEN", TOKEN)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Authorization", "Bearer "+TOKEN)
 
