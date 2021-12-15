@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func GetModels(patente string) {
+func GetModels(patente string) *[]byte {
 
 	url := URL + "/v1/versiones/?patente=" + patente
 	method := "GET"
@@ -24,14 +24,14 @@ func GetModels(patente string) {
 	res, err := client.Do(req)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return &([]byte{})
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return &([]byte{})
 	}
-	fmt.Println(string(body))
+	return &body
 }
