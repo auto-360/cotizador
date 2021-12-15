@@ -3,7 +3,9 @@ package p
 
 import (
 	"fmt"
+	"net"
 	"net/http"
+	"os"
 
 	"example.com/cloudfunction/autofact"
 )
@@ -20,5 +22,22 @@ func GetModel(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateTransaction(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hola TX!")
+
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		os.Stderr.WriteString("Oops: " + err.Error() + "\n")
+		os.Exit(1)
+	}
+
+	IP := ""
+	for _, a := range addrs {
+		if ipnet, ok := a.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				IP = IP + ipnet.IP.String() + "\n"
+			}
+		}
+	}
+
+	fmt.Fprintf(w, "Hello, %s!", IP)
+
 }
