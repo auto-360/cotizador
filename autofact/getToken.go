@@ -1,11 +1,11 @@
 package autofact
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
 )
 
 type user struct {
@@ -17,18 +17,16 @@ type token struct {
 	Token string `json:"token"`
 }
 
-func getToken(user, passwd string) string {
+func getToken(username, passwd string) string {
 
-	url := "https://api-integracion.autopress.cl/v1/auth/"
+	url := URL + "/v1/auth/"
 	method := "POST"
 
-	payload := strings.NewReader(`{
-  "usuario": "auto360_rest",
-  "contrasena": "saBN8cjCtxxFrh567R33zLWm"
-}`)
+	u := user{username, passwd}
+	payload, _ := json.Marshal(u)
 
 	client := &http.Client{}
-	req, err := http.NewRequest(method, url, payload)
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(payload))
 
 	if err != nil {
 		fmt.Println(err)
@@ -51,6 +49,7 @@ func getToken(user, passwd string) string {
 
 	t := token{}
 
+	fmt.Println(string(body))
 	err = json.Unmarshal(body, &t)
 	if err != nil {
 		fmt.Println(err)

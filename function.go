@@ -12,7 +12,7 @@ import (
 // of the request or "Hello, World!" if there isn't one.
 func GetModel(w http.ResponseWriter, r *http.Request) {
 	value := autofact.GetModels("bbbb24")
-	fmt.Fprint(w, *value)
+	w.Write(*value)
 }
 
 func CreateTransaction(w http.ResponseWriter, r *http.Request) {
