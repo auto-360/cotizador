@@ -22,4 +22,4 @@ jobs:
       uses: 'google-github-actions/deploy-cloud-functions@v0'
       with:
         name: 'my-function'
-        runtime: 'nodejs12
+        runtime: 'nodejs12'
