@@ -21,5 +21,5 @@ jobs:
     - id: 'deploy'
       uses: 'google-github-actions/deploy-cloud-functions@v0'
       with:
-        name: 'my-function'
-        runtime: 'nodejs12'
+        name: 'test'
+        runtime: 'go1.16'
