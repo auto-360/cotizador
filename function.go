@@ -3,12 +3,22 @@ package p
 
 import (
 	"fmt"
+	"math/rand"
 	"net"
 	"net/http"
 	"os"
+	"time"
 
 	"example.com/cloudfunction/autofact"
 )
+
+var i int
+
+func init() {
+	s1 := rand.NewSource(time.Now().UnixNano())
+	r1 := rand.New(s1)
+	i = r1.Intn(100)
+}
 
 // HelloWorld prints the JSON encoded "message" field in the body
 // of the request or "Hello, World!" if there isn't one.
@@ -38,6 +48,6 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	fmt.Fprintf(w, "Hello, %s!", IP)
+	fmt.Fprintf(w, "Hello ,%d , %s!", i, IP)
 
 }
