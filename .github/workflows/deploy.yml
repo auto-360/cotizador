@@ -18,8 +18,14 @@ jobs:
       with:
         credentials_json: '${{ secrets.gcp_credentials }}'
 
-    - id: 'deploy'
+    - id: 'deploy-model'
       uses: 'google-github-actions/deploy-cloud-functions@v0'
       with:
         name: 'Test'
+        runtime: 'go116'
+
+    - id: 'deploy-transaction'
+      uses: 'google-github-actions/deploy-cloud-functions@v0'
+      with:
+        name: 'CreateTransaction'
         runtime: 'go116'

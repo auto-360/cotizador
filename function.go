@@ -8,6 +8,10 @@ import (
 
 // HelloWorld prints the JSON encoded "message" field in the body
 // of the request or "Hello, World!" if there isn't one.
-func Test(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hola Mundow!")
+func GetModel(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Hola model!")
+}
+
+func CreateTransaction(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Hola TX!")
 }
