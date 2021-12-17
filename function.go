@@ -84,7 +84,7 @@ func CreateAssistance(w http.ResponseWriter, r *http.Request) {
 	sender := "no-responder@auto360.cl"
 	subject := "Compra Vehiculo auto360"
 	body := "Hello from Mailgun Go!"
-	recipient := "recipient@example.com"
+	recipient := "malba@mmae.cl"
 
 	message := mg.NewMessage(sender, subject, body, recipient)
 
