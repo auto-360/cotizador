@@ -1,34 +1,33 @@
 package autofact
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
 )
 
+type CaracteristicasVehiculo struct {
+	Kilometraje int    `json:"kilometraje"`
+	IDRegion    int    `json:"id_region"`
+	Color       string `json:"color"`
+	Patente     string `json:"patente"`
+}
+type Cliente struct {
+	Solicitante          string `json:"solicitante"`
+	Nombre               string `json:"nombre"`
+	Rut                  string `json:"rut"`
+	Telefono             int    `json:"telefono"`
+	Email                string `json:"email"`
+	MarcaIntencionCompra string `json:"marca_intencion_compra"`
+}
+
 type TxRequest struct {
-	FechaTasacion           string `json:"fecha_tasacion"`
-	IDVersion               int    `json:"id_version"`
-	CaracteristicasVehiculo struct {
-		Kilometraje int    `json:"kilometraje"`
-		IDRegion    int    `json:"id_region"`
-		Color       string `json:"color"`
-		Patente     string `json:"patente"`
-	} `json:"caracteristicas_vehiculo"`
-	AjustesAdicionales []struct {
-		Descripcion string `json:"descripcion"`
-		Monto       int    `json:"monto"`
-	} `json:"ajustes_adicionales"`
-	Cliente struct {
-		Solicitante          string `json:"solicitante"`
-		Nombre               string `json:"nombre"`
-		Rut                  string `json:"rut"`
-		Telefono             int    `json:"telefono"`
-		Email                string `json:"email"`
-		MarcaIntencionCompra string `json:"marca_intencion_compra"`
-	} `json:"cliente"`
-	Imagenes []interface{} `json:"imagenes"`
+	FechaTasacion           string                  `json:"fecha_tasacion"`
+	IDVersion               int                     `json:"id_version"`
+	CaracteristicasVehiculo CaracteristicasVehiculo `json:"caracteristicas_vehiculo"`
+	Cliente                 Cliente                 `json:"cliente"`
 }
 
 type TxResponse struct {
@@ -64,39 +63,20 @@ type TxResponse struct {
 	} `json:"cliente"`
 }
 
-func CreateTransaction() {
+func CreateTransaction(tr *TxRequest) TxResponse {
 
 	url := URL + "/v1/tasaciones/"
 	method := "POST"
 
-	payload := strings.NewReader(`{
-  "fecha_tasacion": "2021-12-14",
-  "id_version": 61417,
-  "caracteristicas_vehiculo": {
-    "kilometraje": 0,
-    "id_region": 13,
-    "color": "azul",
-    "patente": "TD4301"
-  },
-  "ajustes_adicionales": [],
-  "cliente": {
-    "solicitante": "string",
-    "nombre": "Jorge Cáceres",
-    "rut": "23858481-7",
-    "telefono": 999999999,
-    "email": "cliente@gmail.com",
-    "marca_intencion_compra": "si"
-  },
-  "imagenes": []
-}
-`)
+	payload, _ := json.Marshal(tr)
 
+	fmt.Println(string(payload))
 	client := &http.Client{}
-	req, err := http.NewRequest(method, url, payload)
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(payload))
 
 	if err != nil {
 		fmt.Println(err)
-		return
+		return TxResponse{}
 	}
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Authorization", "Bearer "+TOKEN)
@@ -104,14 +84,21 @@ func CreateTransaction() {
 	res, err := client.Do(req)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return TxResponse{}
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return TxResponse{}
 	}
-	fmt.Println(string(body))
+
+	var txResponse TxResponse
+	err = json.Unmarshal(body, &txResponse)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return txResponse
 }
