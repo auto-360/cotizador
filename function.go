@@ -98,4 +98,6 @@ func CreateAssistance(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Printf("ID: %s Resp: %s\n", id, resp)
+
+	w.Write([]byte("OK"))
 }
