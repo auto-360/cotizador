@@ -31,3 +31,10 @@ jobs:
         name: 'CreateTransaction'
         runtime: 'go116'
         env_vars: AUTOFACT_URL=${{ secrets.AUTOFACT_URL }},AUTOFACT_USER=${{ secrets.AUTOFACT_USER }},AUTOFACT_PASS=${{ secrets.AUTOFACT_PASS }}
+
+    - id: 'deploy-Assistance'
+      uses: 'google-github-actions/deploy-cloud-functions@v0'
+      with:
+        name: 'CreateAssistance'
+        runtime: 'go116'
+        env_vars: AUTOFACT_URL=${{ secrets.AUTOFACT_URL }},AUTOFACT_USER=${{ secrets.AUTOFACT_USER }},AUTOFACT_PASS=${{ secrets.AUTOFACT_PASS }}

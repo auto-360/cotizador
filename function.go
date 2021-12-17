@@ -6,10 +6,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 
 	"example.com/cloudfunction/autofact"
 )
+
+var email string = os.Getenv("EMAIL")
 
 type Client struct {
 	IdVersion            int    `json:"idVersion"`
