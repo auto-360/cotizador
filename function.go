@@ -2,17 +2,22 @@
 package p
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"time"
 
 	"example.com/cloudfunction/autofact"
+	"github.com/mailgun/mailgun-go/v4"
 )
 
 var email string = os.Getenv("EMAIL")
+var domain string = os.Getenv("DOMAIN")
+var apiKey string = os.Getenv("apiKey")
 
 type Client struct {
 	IdVersion            int    `json:"idVersion"`
@@ -74,5 +79,23 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateAssistance(w http.ResponseWriter, r *http.Request) {
+	mg := mailgun.NewMailgun(domain, apiKey)
 
+	sender := "no-responder@auto360.cl"
+	subject := "Compra Vehiculo auto360"
+	body := "Hello from Mailgun Go!"
+	recipient := "recipient@example.com"
+
+	message := mg.NewMessage(sender, subject, body, recipient)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	resp, id, err := mg.Send(ctx, message)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("ID: %s Resp: %s\n", id, resp)
 }
