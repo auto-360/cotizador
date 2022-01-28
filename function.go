@@ -2,9 +2,11 @@
 package p
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -25,8 +27,8 @@ type Client struct {
 	Color                string `json:"color"`
 	IDRegion             int    `json:"idRegion"`
 	Kilometraje          int    `json:"kilometraje"`
-	Nombre               string `json:"nombre"`
-	Apellido             string `json:"apellido"`
+	Name                 string `json:"name"`
+	LastName             string `json:"lastName"`
 	Rut                  string `json:"rut"`
 	Telefono             int    `json:"telefono"`
 	Email                string `json:"email"`
@@ -35,7 +37,19 @@ type Client struct {
 
 // HelloWorld prints the JSON encoded "message" field in the body
 // of the request or "Hello, World!" if there isn't one.
+
+func setupResponse(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+}
+
 func GetModel(w http.ResponseWriter, r *http.Request) {
+
+	setupResponse(&w, r)
+	if (r).Method == "OPTIONS" {
+		return
+	}
 	patente := r.URL.Query().Get("patente")
 	if len(patente) != 6 {
 		return
@@ -45,7 +59,10 @@ func GetModel(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateTransaction(w http.ResponseWriter, r *http.Request) {
-
+	setupResponse(&w, r)
+	if (r).Method == "OPTIONS" {
+		return
+	}
 	tx := autofact.TxRequest{}
 
 	client := Client{}
@@ -66,7 +83,7 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request) {
 	t := time.Now()
 	tx.FechaTasacion = t.Format("2006-01-02")
 	tx.Cliente.Email = client.Email
-	tx.Cliente.Nombre = fmt.Sprintf("%s %s", client.Nombre, client.Apellido)
+	tx.Cliente.Nombre = fmt.Sprintf("%s %s", client.Name, client.LastName)
 	tx.Cliente.Rut = client.Rut
 	tx.Cliente.Solicitante = "string"
 	tx.Cliente.Telefono = client.Telefono
@@ -79,16 +96,38 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateAssistance(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	if (r).Method == "OPTIONS" {
+		return
+	}
+	tmpl := template.Must(template.ParseFiles("email.html"))
+
+	var tpl bytes.Buffer
+
+	client := Client{}
+	client.Name = "Daniel"
+	client.LastName = "Speedy"
+
+	if err := tmpl.Execute(&tpl, client); err != nil {
+		log.Println(err)
+		return
+	}
+
+	body := tpl.String()
+
 	mg := mailgun.NewMailgun(domain, apiKey)
 
 	sender := "no-responder@auto360.cl"
 	subject := "Compra Vehiculo auto360"
-	body := "Hello from Mailgun Go!"
-	recipient := "malba@mmae.cl"
 
-	message := mg.NewMessage(sender, subject, body, recipient)
+	recipient := "daniel@auto360.cl"
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	message := mg.NewMessage(sender, subject, "hola", recipient)
+	message.SetHtml(body)
+	fmt.Println("BODY", body)
+	//message.AddCC(email)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*20)
 	defer cancel()
 
 	resp, id, err := mg.Send(ctx, message)
