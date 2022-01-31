@@ -2,37 +2,47 @@
 package p
 
 import (
-	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"time"
 
 	"example.com/cloudfunction/autofact"
-	"github.com/mailgun/mailgun-go/v4"
 )
 
 var email string = os.Getenv("EMAIL")
 var domain string = os.Getenv("DOMAIN")
 var apiKey string = os.Getenv("apiKey")
 
+// type Client struct {
+// 	IdVersion   int    `json:"versionID"`
+// 	Patente     string `json:"patente"`
+// 	Color       string `json:"color"`
+// 	IDRegion    int    `json:"idRegion"`
+// 	Kilometraje int    `json:"kilometraje"`
+// 	Name        string `json:"nombre"`
+// 	LastName    string `json:"apellido"`
+// 	//Rut                  string `json:"rut"`
+// 	Telefono             int    `json:"telefono"`
+// 	Email                string `json:"email"`
+// 	MarcaIntencionCompra string `json:"marcaIntencionCompra"`
+// }
 type Client struct {
-	IdVersion            int    `json:"idVersion"`
-	Patente              string `json:"patente"`
-	Color                string `json:"color"`
-	IDRegion             int    `json:"idRegion"`
-	Kilometraje          int    `json:"kilometraje"`
-	Name                 string `json:"name"`
-	LastName             string `json:"lastName"`
-	Rut                  string `json:"rut"`
-	Telefono             int    `json:"telefono"`
-	Email                string `json:"email"`
-	MarcaIntencionCompra string `json:"marcaIntencionCompra"`
+	Patente     string `json:"patente"`
+	Region      int    `json:"region"`
+	Kilometraje int    `json:"kilometraje"`
+	Marca       string `json:"marca"`
+	Modelo      string `json:"modelo"`
+	Ano         int    `json:"ano"`
+	Version     string `json:"version"`
+	VersionID   int    `json:"versionID"`
+	Color       string `json:"color"`
+	Name        string `json:"name"`
+	Email       string `json:"email"`
+	LastName    string `json:"lastName"`
+	Phone       string `json:"telefono"`
 }
 
 // HelloWorld prints the JSON encoded "message" field in the body
@@ -76,18 +86,18 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request) {
 
 	tx.CaracteristicasVehiculo.Patente = client.Patente
 	tx.CaracteristicasVehiculo.Color = client.Color
-	tx.CaracteristicasVehiculo.IDRegion = client.IDRegion
+	tx.CaracteristicasVehiculo.IDRegion = client.Region
 	tx.CaracteristicasVehiculo.Kilometraje = client.Kilometraje
 
-	tx.IDVersion = client.IdVersion
+	tx.IDVersion = client.VersionID
 	t := time.Now()
 	tx.FechaTasacion = t.Format("2006-01-02")
 	tx.Cliente.Email = client.Email
 	tx.Cliente.Nombre = fmt.Sprintf("%s %s", client.Name, client.LastName)
-	tx.Cliente.Rut = client.Rut
-	tx.Cliente.Solicitante = "string"
-	tx.Cliente.Telefono = client.Telefono
-	tx.Cliente.MarcaIntencionCompra = client.MarcaIntencionCompra
+	tx.Cliente.Rut = "" // client.Rut
+	tx.Cliente.Solicitante = "Portal"
+	//tx.Cliente.Telefono = client.Phone
+	//tx.Cliente.MarcaIntencionCompra = client.MarcaIntencionCompra
 
 	rx := autofact.CreateTransaction(&tx)
 	b, _ := json.Marshal(rx)
@@ -100,43 +110,44 @@ func CreateAssistance(w http.ResponseWriter, r *http.Request) {
 	if (r).Method == "OPTIONS" {
 		return
 	}
-	tmpl := template.Must(template.ParseFiles("email.html"))
+	/*
+		 	tmpl := template.Must(template.ParseFiles("email.html"))
 
-	var tpl bytes.Buffer
+			var tpl bytes.Buffer
 
-	client := Client{}
-	client.Name = "Daniel"
-	client.LastName = "Speedy"
+			client := Client{}
+			client.Name = "Daniel"
+			client.LastName = "Speedy"
 
-	if err := tmpl.Execute(&tpl, client); err != nil {
-		log.Println(err)
-		return
-	}
+			if err := tmpl.Execute(&tpl, client); err != nil {
+				log.Println(err)
+				return
+			}
 
-	body := tpl.String()
+			body := tpl.String()
 
-	mg := mailgun.NewMailgun(domain, apiKey)
+			mg := mailgun.NewMailgun(domain, apiKey)
 
-	sender := "no-responder@auto360.cl"
-	subject := "Compra Vehiculo auto360"
+			sender := "no-responder@auto360.cl"
+			subject := "Compra Vehiculo auto360"
 
-	recipient := "daniel@auto360.cl"
+			recipient := "malba@mmae.cl"
 
-	message := mg.NewMessage(sender, subject, "hola", recipient)
-	message.SetHtml(body)
-	fmt.Println("BODY", body)
-	//message.AddCC(email)
+			message := mg.NewMessage(sender, subject, "hola", recipient)
+			message.SetHtml(body)
+			fmt.Println("BODY", body)
+			//message.AddCC(email)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*20)
-	defer cancel()
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second*20)
+			defer cancel()
 
-	resp, id, err := mg.Send(ctx, message)
+			resp, id, err := mg.Send(ctx, message)
 
-	if err != nil {
-		log.Fatal(err)
-	}
+			if err != nil {
+				log.Fatal(err)
+			}
 
-	fmt.Printf("ID: %s Resp: %s\n", id, resp)
-
+			fmt.Printf("ID: %s Resp: %s\n", id, resp)
+	*/
 	w.Write([]byte(`{"message": "ok"}`))
 }
