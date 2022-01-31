@@ -5,11 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math"
 	"net/http"
+	"net/mail"
 	"os"
 	"time"
 
 	"example.com/cloudfunction/autofact"
+	mailSender "example.com/cloudfunction/mail"
 )
 
 var email string = os.Getenv("EMAIL")
@@ -42,7 +45,7 @@ type Client struct {
 	Name        string `json:"name"`
 	Email       string `json:"email"`
 	LastName    string `json:"lastName"`
-	Phone       string `json:"telefono"`
+	Phone       int    `json:"telefono"`
 }
 
 // HelloWorld prints the JSON encoded "message" field in the body
@@ -66,6 +69,12 @@ func GetModel(w http.ResponseWriter, r *http.Request) {
 	}
 	value := autofact.GetModels(patente)
 	w.Write(*value)
+}
+
+//check if string is a valid email
+func checkemail(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil
 }
 
 func CreateTransaction(w http.ResponseWriter, r *http.Request) {
@@ -92,16 +101,28 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request) {
 	tx.IDVersion = client.VersionID
 	t := time.Now()
 	tx.FechaTasacion = t.Format("2006-01-02")
-	tx.Cliente.Email = client.Email
+	if checkemail(client.Email) {
+		tx.Cliente.Email = client.Email
+	}
 	tx.Cliente.Nombre = fmt.Sprintf("%s %s", client.Name, client.LastName)
 	tx.Cliente.Rut = "" // client.Rut
 	tx.Cliente.Solicitante = "Portal"
-	//tx.Cliente.Telefono = client.Phone
-	//tx.Cliente.MarcaIntencionCompra = client.MarcaIntencionCompra
-
+	if (client.Phone) >= int(math.Pow(10, 7)) {
+		tx.Cliente.Telefono = client.Phone
+	}
 	rx := autofact.CreateTransaction(&tx)
+
 	b, _ := json.Marshal(rx)
 	w.Write(b)
+
+	data := mailSender.Data{}
+	data.Fullname = tx.Cliente.Nombre
+	data.Brand = client.Marca
+	data.Version = client.Version
+	data.TxResponse = &rx
+	data.Modelo = client.Modelo
+	data.Color = client.Color
+	mailSender.Send(&data)
 
 }
 

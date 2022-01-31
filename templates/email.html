@@ -1,64 +1,371 @@
-<div style="background-color:#fafafa;text-align:center;padding:3px 0px;font-family:'Helvetica Neue','Helvetica',Arial,sans-serif">
-    <div class="email" style="background-color:#fff;text-align: left;border-radius:7px;width:600px;max-width:600px;margin:20px auto 40px auto;">
-        <!-- logo -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0;">
+ 	<meta name="format-detection" content="telephone=no"/>
+
+
+	<style>
+/* Reset styles */ 
+body { margin: 0; padding: 0; min-width: 100%; width: 100% !important; height: 100% !important;}
+body, table, td, div, p, a { -webkit-font-smoothing: antialiased; text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; line-height: 100%; }
+table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse !important; border-spacing: 0; }
+img { border: 0; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+#outlook a { padding: 0; }
+.ReadMsgBody { width: 100%; } .ExternalClass { width: 100%; }
+.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; }
+
+@media all and (max-width: 600px) {
+	.floater { width: 320px; }
+}
+
+a, a:hover {
+	color: #127DB3;
+}
+.footer a, .footer a:hover {
+	color: #999999;
+}
+
+ 	</style>
+
+	<!-- MESSAGE SUBJECT -->
+	<title>Asunto</title>
+
+</head>
+
+<!-- BODY -->
+<body topmargin="0" rightmargin="0" bottommargin="0" leftmargin="0" marginwidth="0" marginheight="0" width="100%" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; width: 100%; height: 100%; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; line-height: 100%;
+	background-color: #FFFFFF;
+	color: #000000;"
+	bgcolor="#FFFFFF"
+	text="#000000">
 
 
 
+<!-- SECTION / BACKGROUND -->
+<table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; width: 100%;" class="background"><tr><td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;"
+	>
+
+<!-- WRAPPER -->
+<table border="0" cellpadding="0" cellspacing="0" align="center"
+	width="600" style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit;
+	max-width: 600px; border-radius: 15px;" class="wrapper" bgcolor="#1f94cb">
+    <!--HEADER-->
+    <tr>
+        <td align="center" colspan="4" valign="top" class="image-section" style="border-collapse: collapse;border: 0;margin: 0;padding: 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 16px;line-height: 26px;background-color: #fff;">
+        <a href="http://auto360.cl"><img class="top-image" src="http://www.auto360.cl/wp-content/uploads/2017/08/logo_auto_360_02.png" style="line-height: 1;width: 300px; padding-top: 10px; padding-bottom: 10px;" alt="Auto 360"></a>
+        </td>
+    </tr>
+
+	<tr style="">
+		<td align="center" valign="top" style="background-color: #ffffff; border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 7%; padding-right: 7%; width: 86%; font-size: 16px; font-weight: 300; line-height: 120%;
+			color: rgb(151, 150, 150);
+			font-family: sans-serif; padding-bottom:25px;" class="paragraph">
+				Vende tu auto al instante... lo pensaste, lo vendiste.
+		</td>
+	</tr>
+
+	<!--Encabezado-->
+	<tr bgcolor="#1d76a0">
+		<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 2em; font-weight: bold; line-height: 130%;
+			padding-top: 20px; padding-bottom: 20px;
+			color: #FFFFFF;
+			font-family: sans-serif;" class="header">
+				SOLICITUD PRESUPUESTO
+		</td>
+	</tr>
+    
+
+	<!-- Datos auto -->
+	<tr>
+		<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 7%; padding-right: 7%; width: 86%; font-size: 17px; font-weight: 400; line-height: 130%;
+			padding-top: 35px; 
+			color: #FFFFFF;
+			font-family: sans-serif;" class="paragraph">
+				Estimado(a) <strong> {{.Fullname}} </strong> , junto con saludarle y agradeciendo su
+                preferencia, a continuación le entregamos toda la información referente al
+                presupuesto solicitado
+		</td>
+	</tr>
+
+    <!--INFO TABLA-->
+    <tr>
+
+        <td style="padding: 35px 15px;">
+
+              <table style="width:90%;margin:auto;border:2px #f1f1f1 solid;border-radius:5px; font-family: sans-serif;">
+
+                 <tbody><tr><td style="padding:4px 30px">
+
+                </td>
+
+                </tr>
+                
+                
+                <tr>
+
+                    <td width="45%"align="left" style="color:#ffffff;padding:10px 30px;text-align:right">
+
+                        <strong>Marca :</strong>
+
+                    </td>
+
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:left">
+
+                        <span>{{.Brand}}</span>
+
+                    </td>
+
+                </tr style="padding-bottom: 10px">
+
+                <tr>
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:right">
+
+                        <strong> Patente :</strong>
+
+                    </td>
+
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:left">
+
+                        <span>{{.TxResponse.CaracteristicasVehiculo.Patente}}</span>
+
+                    </td>
+
+                </tr>
+
+
+                <tr>
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:right">
+
+                        <strong> Modelo :</strong>
+
+                    </td>
+
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:left">
+
+                        <span>{{.Modelo}} {{.Color}}</span>
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:right">
+
+                        <strong>Versión :</strong>
+
+                    </td>
+
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:left">
+
+                        <span>{{.Version}}</span>
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:right">
+
+                        <strong>Kilometraje :</strong>
+
+                    </td>
+
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:left">
+                        <span>{{.TxResponse.CaracteristicasVehiculo.Kilometraje}}</span>
+                    </td>
 
 
 
-        <h2
-            style="font-weight:normal;font-size:25px;padding:40px 40px 20px 40px; margin: 0px;color:#777;background-color:#fff;">
- 
-        </h2>
-        <div class="cabecera"
-            style="padding:25px 40px;font-size:20px;color:#fff;background-color:  #2196F2!important;color: #FFFFFF">
-            <div>
-                Auto360 te compra tu audi R8
-            </div>
-        </div>
+                </tr>
+                <tr>
+
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:right">
+
+                        <strong>Region :</strong>
+
+                    </td>
+
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:left">
+
+                        <span> {{.GetRegion }}  </span>
 
 
 
-        <div class="elements email-content dragElement"
-            style="padding:20px 40px;color:#555;font-size:14px; background-color: #fff;" data-id="20">
+                    </td>
 
 
 
+                </tr>
+                
+               
 
-            <div class="cuerpo">
-                <p>Hola : {{.Name}}  {{.LastName}} </p>
+                <tr>
 
-                <p>Acabas de cotizar para que te compremos tu nae</p>
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:right; font-size: 21px;">
 
-                <p> El precio referencial ofertado se encuentra entra $10.000.000.- y $12.000.000.-</p>
-   
-                <p> Si quieres contactarnos mas rapido puedes responde este correo a daniel@auto360.cl o al siguiente link
-                </p>
-                <br/>
+                        <strong>PRECIO TOTAL:</strong>
 
-            
+                    </td>
 
+                    <td align="left" style="color:#ffffff;padding:10px 30px;text-align:left; font-size: 21px;">
 
-            </div>
-
+                        <strong>{{.GetPrice }} </strong>
 
 
 
-        </div>
-        
+                    </td>
 
-        <div class="btnPortal dragElement" id="email-pdf" style="padding: 20px 40px;" data-id="4">
-        </div>
+                </tr>
+
+                
+
+                 <tr><td style="padding:4px 30px">
+
+                 </td>
+
+            </tr></tbody></table>
+
+        </td>
+
+    </tr>
+
+	<!-- Inspección -->
+	<tr>
+		<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 7%; padding-right: 7%; width: 86%; font-size: 16px; font-weight: 300; line-height: 120%;
+			color: rgb(226, 224, 224);
+			font-family: sans-serif; padding-top: 10px; padding-bottom: 35px;" class="paragraph">
+                <strong style="color:white;">Comentarios: </strong>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta ullamcorper luctus. Etiam posuere dignissim ex, vel venenatis sapien dignissim id. Duis faucibus eros et ultrices cursus
+		</td>
+	</tr>
+    	<!-- BUTTON -->
+	<tr>
+		<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+			padding-top: 25px;
+			padding-bottom: 50px;" class="button">			
+			<a href="#" target="_blank" style="text-decoration: underline;">
+				<table border="0" cellpadding="0" cellspacing="0" align="center" style="border:2px solid white; max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;">
+					<tr>
+						<td align="center" valign="middle" style="padding: 0 0 0 12px; margin: 0; text-decoration: underline; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;"
+						bgcolor="#51b255">
+							<img src="https://fernaweb.com/wp-content/uploads/2022/01/wsp.png" width="22px" style="line-height: 120%;" alt="">
+						</td>
+
+						<td align="center" valign="middle" style="padding: 24px 12px 24px 8px; margin: 0; text-decoration: underline; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;"
+						bgcolor="#51b255">
+						
+						<a target="_blank" style="text-decoration: underline;
+							color: #FFFFFF; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 120%;"
+							href="#">
+							Conversemos
+						</a>
+			</td></tr></table></a>
+		</td>
+	</tr>
 
 
-        <div class="footer" id="email-footer"
-            style="padding:25px 40px;background-color:#f1f2f4;color:#888;font-size:12px;border-radius:0px 0px 7px 7px;">
-            <p style="margin:5px 0px;">En caso de cualquier duda, favor contácteme  a daniel@auto360.cl </p>
-            <p style="margin:5px 0px;">Atentamente,</p>
-            <p style="margin:5px 0px;">El equipo de auto360</p>
-            <p style="margin:5px 0px;"></p>
+<!-- End of WRAPPER -->
+</table>
 
-        </div>
-    </div>
-</div>
+<!-- SECTION / BACKGROUND -->
+</td></tr><tr><td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
+	padding-top: 5px;"
+	bgcolor="#FFFFFF">
+
+<!-- WRAPPER -->
+<table border="0" cellpadding="0" cellspacing="0" align="center"
+	width="600" style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit;
+	max-width: 600px;">
+
+    <tr>
+        <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 30px; font-weight: bold; line-height: 130%;
+            padding-top: 20px;
+            color: #555454;
+            font-family: sans-serif;" class="header">
+                Revisa nuestro Stock
+        </td>
+    </tr>
+
+	<!-- BUTTON -->
+ 	<tr>
+		<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+			padding-top: 30px;
+			padding-bottom: 35px;" class="button"><a
+			href="#" target="_blank" style="text-decoration: underline;">
+				<table border="0" cellpadding="0" cellspacing="0" align="center" style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;"><tr><td align="center" valign="middle" style="padding: 12px 24px; margin: 0; text-decoration: underline; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;"
+					bgcolor="#127DB3"><a target="_blank" style="text-decoration: underline;
+					color: #FFFFFF; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 120%;"
+					href="#">
+						Ver Stock
+					</a>
+			</td></tr></table></a>
+		</td>
+	</tr>
+
+<!-- End of WRAPPER -->
+</table>
+
+<!-- SECTION / BACKGROUND -->
+<!-- Set section background color -->
+</td></tr><tr bgcolor="#F0F0F0"><td align="center" valign="top" style="background-color:#F0F0F0; border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;"
+	bgcolor="#F0F0F0">
+
+<!-- WRAPPER -->
+<table bgcolor="#F0F0F0" border="0" cellpadding="0" cellspacing="0" align="center"
+	width="100%" style="border-collapse: collapse; border-spacing: 0; padding: 0;
+	max-width: 600px;" class="wrapper">
+
+	<!-- SOCIAL NETWORKS -->
+	<tr>
+		<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+			padding-top: 25px;" class="social-icons"><table
+			width="256" border="0" cellpadding="0" cellspacing="0" align="center" style="border-collapse: collapse; border-spacing: 0; padding: 0;">
+			<tr>
+
+				<!-- FB  -->
+				<td align="end" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;"><a target="_blank"
+					href="#"
+				style="text-decoration: none;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
+					color: #000000;"
+					alt="T" title="Facebook"
+					width="44" height="44"
+					src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/facebook.png"></a></td>				
+
+				<!-- IG -->
+				<td align="start" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;"><a target="_blank"
+					href="#"
+				style="text-decoration: none;"><img border="0" vspace="0" hspace="0" style="width: 44; padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
+					color: #000000;"
+					alt="G" title="Instagram"
+					width="44" height="44"
+					src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/instagram.png"></a></td>		
+
+			</tr>
+			</table>
+		</td>
+	</tr>
+
+	<!-- FOOTER -->
+	<tr>
+		<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 13px; font-weight: 400; line-height: 150%;
+			padding-top: 20px;
+			padding-bottom: 20px;
+			color: #999999;
+			font-family: sans-serif;" class="footer">
+
+				<a href="https://auto360.cl" target="_blank" style="text-decoration: underline; color: #999999; font-family: sans-serif; font-size: 16px; font-weight: 400; line-height: 150%;">www.auto360.cl</a>
+
+		</td>
+	</tr>
+
+<!-- End of WRAPPER -->
+</table>
+
+<!-- End of SECTION / BACKGROUND -->
+</td></tr></table>
+
+</body>
+</html>
