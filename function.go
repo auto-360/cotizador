@@ -13,32 +13,21 @@ import (
 
 	"example.com/cloudfunction/autofact"
 	mailSender "example.com/cloudfunction/mail"
+	"example.com/cloudfunction/pilot"
+	"example.com/cloudfunction/utils"
 )
 
 var email string = os.Getenv("EMAIL")
 var domain string = os.Getenv("DOMAIN")
 var apiKey string = os.Getenv("apiKey")
 
-// type Client struct {
-// 	IdVersion   int    `json:"versionID"`
-// 	Patente     string `json:"patente"`
-// 	Color       string `json:"color"`
-// 	IDRegion    int    `json:"idRegion"`
-// 	Kilometraje int    `json:"kilometraje"`
-// 	Name        string `json:"nombre"`
-// 	LastName    string `json:"apellido"`
-// 	//Rut                  string `json:"rut"`
-// 	Telefono             int    `json:"telefono"`
-// 	Email                string `json:"email"`
-// 	MarcaIntencionCompra string `json:"marcaIntencionCompra"`
-// }
 type Client struct {
 	Patente     string `json:"patente"`
 	Region      int    `json:"region"`
 	Kilometraje int    `json:"kilometraje"`
 	Marca       string `json:"marca"`
 	Modelo      string `json:"modelo"`
-	Ano         int    `json:"ano"`
+	Anio        int    `json:"ano"`
 	Version     string `json:"version"`
 	VersionID   int    `json:"versionID"`
 	Color       string `json:"color"`
@@ -111,17 +100,21 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request) {
 		tx.Cliente.Telefono = client.Phone
 	}
 	rx := autofact.CreateTransaction(&tx)
-
-	b, _ := json.Marshal(rx)
-	w.Write(b)
-
-	data := mailSender.Data{}
+	data := utils.Data{}
 	data.Fullname = tx.Cliente.Nombre
+	data.Name = client.Name
+	data.LastName = client.LastName
 	data.Brand = client.Marca
 	data.Version = client.Version
 	data.TxResponse = &rx
 	data.Modelo = client.Modelo
 	data.Color = client.Color
+	data.Anio = client.Anio
+	data.SetHash()
+
+	b, _ := json.Marshal(data)
+	w.Write(b)
+
 	mailSender.Send(&data)
 
 }
@@ -131,44 +124,34 @@ func CreateAssistance(w http.ResponseWriter, r *http.Request) {
 	if (r).Method == "OPTIONS" {
 		return
 	}
-	/*
-		 	tmpl := template.Must(template.ParseFiles("email.html"))
 
-			var tpl bytes.Buffer
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
 
-			client := Client{}
-			client.Name = "Daniel"
-			client.LastName = "Speedy"
+	data := utils.Data{}
+	json.Unmarshal(body, &data)
 
-			if err := tmpl.Execute(&tpl, client); err != nil {
-				log.Println(err)
-				return
-			}
+	if !data.Validate() {
+		return
+	}
 
-			body := tpl.String()
+	d := pilot.Data{}
 
-			mg := mailgun.NewMailgun(domain, apiKey)
+	d.PilotFirstname = data.Name
+	d.PilotLastname = data.LastName
+	d.PilotCellphone = string(data.TxResponse.Cliente.Telefono)
+	d.PilotEmail = data.TxResponse.Cliente.Email
+	d.PilotContactTypeId = "2"
+	d.PilotBusinessTypeId = "2"
 
-			sender := "no-responder@auto360.cl"
-			subject := "Compra Vehiculo auto360"
+	d.PilotCarBrand = data.Brand
+	d.PilotCarModel = data.Modelo
 
-			recipient := "malba@mmae.cl"
+	d.PilotNotes = "Piloto de MMAE"
 
-			message := mg.NewMessage(sender, subject, "hola", recipient)
-			message.SetHtml(body)
-			fmt.Println("BODY", body)
-			//message.AddCC(email)
+	pilot.Send(&d)
 
-			ctx, cancel := context.WithTimeout(context.Background(), time.Second*20)
-			defer cancel()
-
-			resp, id, err := mg.Send(ctx, message)
-
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			fmt.Printf("ID: %s Resp: %s\n", id, resp)
-	*/
 	w.Write([]byte(`{"message": "ok"}`))
 }
