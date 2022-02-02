@@ -148,10 +148,20 @@ func CreateAssistance(w http.ResponseWriter, r *http.Request) {
 
 	d.PilotCarBrand = data.Brand
 	d.PilotCarModel = data.Modelo
+	if r.URL.Query().Get("modo") == "Venta" {
 
-	d.PilotNotes = "Piloto de MMAE"
+		d.PilotNotes = fmt.Sprintf("Vehiculo %s %s %s %s Banda %d - %d interesado en venta directa", data.Brand, data.Modelo,
+			data.Version, data.Color,
+			data.TxResponse.Indicadores.BandaMin, data.TxResponse.Indicadores.BandaMax)
+		pilot.Send(&d)
+	} else if r.URL.Query().Get("modo") == "Consignacion" {
+		d.PilotNotes = fmt.Sprintf("Vehiculo %s %s %s %s Banda %d - %d interesado en consignacion", data.Brand, data.Modelo,
+			data.Version, data.Color,
+			data.TxResponse.Indicadores.BandaMin, data.TxResponse.Indicadores.BandaMax)
+		pilot.Send(&d)
+	}
 
-	pilot.Send(&d)
-
-	w.Write([]byte(`{"message": "ok"}`))
+	u := utils.URL{URL: data.GetMSG()}
+	b, _ := json.Marshal(u)
+	w.Write(b)
 }

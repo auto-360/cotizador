@@ -8,36 +8,11 @@ import (
 	"log"
 	"time"
 
-	"example.com/cloudfunction/autofact"
+	"example.com/cloudfunction/utils"
 	"github.com/mailgun/mailgun-go/v4"
-	"golang.org/x/text/language"
-	"golang.org/x/text/message"
 )
 
-type Data struct {
-	Fullname   string
-	Brand      string
-	Version    string
-	Color      string
-	Modelo     string
-	TxResponse *autofact.TxResponse
-}
-
-func (d *Data) GetRegion() string {
-	return regiones[d.TxResponse.CaracteristicasVehiculo.IDRegion-1]
-}
-
-func (d *Data) GetKilometraje() string {
-	p := message.NewPrinter(language.Spanish)
-	return p.Sprintf("%d", d.TxResponse.CaracteristicasVehiculo.Kilometraje)
-}
-
-func (d *Data) GetPrice() string {
-	p := message.NewPrinter(language.Spanish)
-	return p.Sprintf("$%d $%d", d.TxResponse.Indicadores.BandaMin, d.TxResponse.Indicadores.BandaMax)
-}
-
-func Send(data *Data) {
+func Send(data *utils.Data) {
 
 	tmpl := template.Must(template.ParseFiles("templates/email.html"))
 
@@ -55,7 +30,7 @@ func Send(data *Data) {
 	sender := "no-responder@auto360.cl"
 	subject := "Compra Vehiculo auto360"
 
-	recipient := "malba@mmae.cl"
+	recipient := data.TxResponse.Cliente.Email
 
 	message := mg.NewMessage(sender, subject, "Send", recipient)
 	message.SetHtml(body)
@@ -67,9 +42,32 @@ func Send(data *Data) {
 
 	resp, id, _ := mg.Send(ctx, message)
 
-	// if err != nil {
-	// 	//log.Fatal(err)
-	// }
+	fmt.Printf("ID: %s Resp: %s\n", id, resp)
+
+	tmpl = template.Must(template.ParseFiles("templates/email_more_info.html"))
+
+	if err := tmpl.Execute(&tpl, data); err != nil {
+		log.Println(err)
+		return
+	}
+
+	sender = "no-responder@auto360.cl"
+	subject = fmt.Sprintf("Cotizacion Vehiculo %s %s %s",
+		data.TxResponse.CaracteristicasVehiculo.Patente,
+		data.Brand,
+		data.Modelo)
+
+	recipient = data.TxResponse.Cliente.Email
+
+	message = mg.NewMessage(sender, subject, "Send", recipient)
+	message.SetHtml(body)
+
+	//message.AddCC(email)
+
+	ctx, cancel = context.WithTimeout(context.Background(), time.Second*20)
+	defer cancel()
+
+	resp, id, _ = mg.Send(ctx, message)
 
 	fmt.Printf("ID: %s Resp: %s\n", id, resp)
 
