@@ -148,7 +148,7 @@ func CreateAssistance(w http.ResponseWriter, r *http.Request) {
 
 	d.PilotCarBrand = data.Brand
 	d.PilotCarModel = data.Modelo
-	if r.URL.Query().Get("modo") == "Venta" {
+	if r.URL.Query().Get("modo") == "Compra" {
 
 		d.PilotNotes = fmt.Sprintf("Vehiculo %s %s %s %s Banda %d - %d interesado en venta directa", data.Brand, data.Modelo,
 			data.Version, data.Color,
@@ -156,6 +156,11 @@ func CreateAssistance(w http.ResponseWriter, r *http.Request) {
 		pilot.Send(&d)
 	} else if r.URL.Query().Get("modo") == "Consignacion" {
 		d.PilotNotes = fmt.Sprintf("Vehiculo %s %s %s %s Banda %d - %d interesado en consignacion", data.Brand, data.Modelo,
+			data.Version, data.Color,
+			data.TxResponse.Indicadores.BandaMin, data.TxResponse.Indicadores.BandaMax)
+		pilot.Send(&d)
+	} else if r.URL.Query().Get("modo") == "Inspeccion" {
+		d.PilotNotes = fmt.Sprintf("Vehiculo %s %s %s %s Banda %d - %d interesado en una inspeccion", data.Brand, data.Modelo,
 			data.Version, data.Color,
 			data.TxResponse.Indicadores.BandaMin, data.TxResponse.Indicadores.BandaMax)
 		pilot.Send(&d)
