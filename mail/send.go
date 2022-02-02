@@ -14,7 +14,7 @@ import (
 
 func Send(data *utils.Data) {
 
-	tmpl := template.Must(template.ParseFiles("templates/email.html"))
+	tmpl := template.Must(template.ParseFiles("email.html"))
 
 	var tpl bytes.Buffer
 
@@ -44,7 +44,7 @@ func Send(data *utils.Data) {
 
 	fmt.Printf("ID: %s Resp: %s\n", id, resp)
 
-	tmpl = template.Must(template.ParseFiles("templates/email_more_info.html"))
+	tmpl = template.Must(template.ParseFiles("email_more_info.html"))
 
 	if err := tmpl.Execute(&tpl, data); err != nil {
 		log.Println(err)
