@@ -8,13 +8,22 @@ import (
 	"log"
 	"time"
 
+	_ "embed"
+
 	"example.com/cloudfunction/utils"
 	"github.com/mailgun/mailgun-go/v4"
 )
 
+//go:embed email.html
+var email []byte
+
+//go:embed email_more_info.html
+var emailMore []byte
+
 func Send(data *utils.Data) {
 
-	tmpl := template.Must(template.ParseFiles("email.html"))
+	//tmpl := template.Must(template.ParseFiles("email.html"))
+	tmpl, _ := template.New("todos").Parse(string(email))
 
 	var tpl bytes.Buffer
 
@@ -44,7 +53,8 @@ func Send(data *utils.Data) {
 
 	fmt.Printf("ID: %s Resp: %s\n", id, resp)
 
-	tmpl = template.Must(template.ParseFiles("email_more_info.html"))
+	//	tmpl = template.Must(template.ParseFiles("email_more_info.html"))
+	tmpl, _ = template.New("todos").Parse(string(emailMore))
 
 	if err := tmpl.Execute(&tpl, data); err != nil {
 		log.Println(err)
